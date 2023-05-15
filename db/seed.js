@@ -1,7 +1,5 @@
-const {
-  // other imports,
-  createUser,
-} = require("./index");
+const { client, getAllUsers, createUser } = require("./index");
+
 
 // new function, should attempt to create a few users
 async function createInitialUsers() {
@@ -22,19 +20,7 @@ async function createInitialUsers() {
   }
 }
 
-// then modify rebuildDB to call our new function
-async function rebuildDB() {
-  try {
-    client.connect();
 
-    await dropTables();
-    await createTables();
-    await createInitialUsers();
-  } catch (error) {
-    throw error;
-  }
-}
-const { client, getAllUsers } = require("./index");
 
 async function dropTables() {
   try {
@@ -76,6 +62,7 @@ async function rebuildDB() {
 
     await dropTables();
     await createTables();
+    await createInitialUsers()
   } catch (error) {
     throw error;
   }
