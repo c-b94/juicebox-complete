@@ -6,15 +6,17 @@ const client = new Client("postgres://localhost:5432/juicebox-dev");
 
 async function createUser({ username, password }) {
   try {
-    const { rows } = await client.query(
+    const {rows} = await client.query(
       `
       INSERT INTO users(username, password)
-      VALUES ($1, $2);
+      VALUES ($1, $2)
+      ON CONFLICT (username) DO NOTHING 
+      RETURNING *;
       `,
       [username, password]
       );
       
-      return rows[0]
+      return rows[0];
     } catch (error) {
       throw error;
   }

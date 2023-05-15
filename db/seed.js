@@ -1,6 +1,5 @@
 const { client, getAllUsers, createUser } = require("./index");
 
-
 // new function, should attempt to create a few users
 async function createInitialUsers() {
   try {
@@ -9,6 +8,14 @@ async function createInitialUsers() {
     const albert = await createUser({
       username: "albert",
       password: "bertie99",
+    });
+    const sandra = await createUser({
+      username: "sandra",
+      password: "2sandy4me",
+    });
+    const glamgal = await createUser({
+      username: "glamgal",
+      password: "soglam",
     });
 
     console.log(albert);
@@ -19,8 +26,6 @@ async function createInitialUsers() {
     throw error;
   }
 }
-
-
 
 async function dropTables() {
   try {
@@ -62,7 +67,7 @@ async function rebuildDB() {
 
     await dropTables();
     await createTables();
-    await createInitialUsers()
+    await createInitialUsers();
   } catch (error) {
     throw error;
   }
