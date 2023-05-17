@@ -39,23 +39,29 @@ async function updateUser(id, fields = {}) {
   const setString = Object.keys(fields)
     .map((key, index) => `"${key}"=$${index + 1}`)
     .join(", ");
+  console.log("setstrings",setString);
 
   // return early if this is called without fields
   if (setString.length === 0) {
     return;
   }
-
+  console.log(`UPDATE users
+  SET ${setString}
+  WHERE id=${id}
+  RETURNING *;`)
   try {
-    const result = await client.query(
+    const {rows: [user]} = await client.query(
       `
       UPDATE users
       SET ${setString}
-      WHERE id=$${setString.length + 1}
+      WHERE id=${id}
       RETURNING *;
     `,
-      [...Object.values(fields), id]
+      Object.values(fields)
     );
-    return result;
+    return user;
+    // we can use advanced destructuring here
+
   } catch (error) {
     throw error;
   }
